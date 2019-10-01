@@ -1,0 +1,75 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "this is my first vpc",
+    "Parameters": {
+        "mycidr": {
+            "Description": "this is my vpc cidr",
+            "Type": "String",
+            "Default": "192.168.0.0/16"
+        },
+        "mysub1": {
+            "Description": "this is my subnet cidr",
+            "Type": "String",
+            "Default": "192.168.1.0/24"
+        },
+        "mysub2": {
+            "Description": "this is my subnet cidr",
+            "Type": "String",
+            "Default": "192.168.2.0/24"
+        },
+        "mysub3": {
+            "Description": "this is my subnet3",
+            "Type": "String",
+            "Default": "192.168.3.0/24"
+        }
+    },
+    "Resources": {
+        "myvpc": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "mycidr"
+                }
+       
+            }
+        },
+        "subnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "VpcId": {
+                    "Ref": "mycidr"
+                },
+                "CidrBlock": {
+                    "Ref": "mysub1"
+                }
+         
+            }
+        },
+        "subnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": "us-east-1b",
+                "VpcId": {
+                    "Ref": "mycidr"
+                },
+                "CidrBlock": {
+                    "Ref": "mysub2"
+                }
+            }
+            
+        },
+        "mysubnet3": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": "us-east-1c",
+                "VpcId": {
+                    "Ref": "mycidr"
+                },
+                "CidrBlock": {
+                    "Ref": "mysub3"
+                }
+            }
+        }
+    }
+}

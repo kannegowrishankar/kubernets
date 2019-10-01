@@ -1,0 +1,68 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "",
+    "Metadata": {
+
+    },
+    "Parameters": {
+    
+    },
+    "Mappings": {
+
+    },
+    "Conditions": {
+
+    },
+    "Resources": {
+        {
+            
+            "myvpc": {
+              "Type": "AWS::EC2::VPC",
+              "Properties": {
+                "CidrBlock": "----/--",
+                "Tags": [-]
+              }
+            }
+            
+        }
+        
+        "rdsDBInstance": {
+          "Type": "AWS::RDS::DBInstance",
+          "Properties": {
+            "AllocatedStorage": "",
+            "DBInstanceClass": "",
+            "AllowMajorVersionUpgrade": "false",
+            "AutoMinorVersionUpgrade": "false",
+            "AvailabilityZone": "us-west-1a",
+            "BackupRetentionPeriod": "1",
+            "CharacterSetName": "",
+            "DBInstanceIdentifier": "hello",
+            "DBName": "myfirstdb",
+            "DBParameterGroupName": "",
+            "DBSecurityGroups": [ "" ],
+            "DBSubnetGroupName": "",
+            "Engine": "",
+            "EngineVersion": "",
+            "LicenseModel": "",
+            "MasterUsername": "shankar",
+            "MasterUserPassword": "root1234",
+            "MultiAZ": "false",
+            "Port": "3306",
+            "PreferredBackupWindow": "",
+            "PreferredMaintenanceWindow": "",
+            "PubliclyAccessible": "false",
+            "SourceDBInstanceIdentifier": "",
+            "StorageEncrypted": "true | false",
+            "StorageType": "",
+            "Tags": [  ],
+            "VPCSecurityGroups": [ "" ]
+          }
+        }
+        
+
+
+    },
+    "Outputs": {
+
+    }
+}

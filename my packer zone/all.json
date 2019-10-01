@@ -1,0 +1,54 @@
+
+"auto" : {
+    "Type" : "AWS::AutoScaling::AutoScalingGroup",
+    "Properties" : {
+        "AvailabilityZones" : ["--"],
+        "LaunchConfigurationName" : "--",
+        "MaxSize" : "--",
+        "MinSize" : "--",
+        "Tags" : [ {"Key" : "Name",
+                    "Value" : ""--"",
+                    "PropagateAtLaunch" : "True"} 
+                ]
+    }
+}
+
+
+"launchConfigName": {
+    "Type" : "AWS::AutoScaling::LaunchConfiguration",
+    "Properties" : {
+        "IamInstanceProfile" : "--",
+        "ImageId" : "--",
+        "InstanceMonitoring" : "--",
+        "InstanceType" : "--",
+        "KeyName" : "--",
+        "SecurityGroups" : [ "--" ],
+        "UserData" : {
+            "Fn::Base64": 
+                {   "Fn::Join": [
+                        "",
+                        [
+                            "#!/bin/bash -ex",
+                            "-"
+                        ]
+                    
+                    ]                 
+                }
+        }
+    }
+}
+
+
+"-": {
+   "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+   "Properties": {
+      "AvailabilityZones" : [ "-" ],
+      "Listeners" : [ - ],
+      "Tags": [
+            {
+              "Key": "-",
+              "Value": "-"
+            }
+      ]
+   }
+}

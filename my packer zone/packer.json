@@ -1,0 +1,29 @@
+{
+    "variables": {
+      "access_key": "AKIAUVO3BLAEKJSWQMY2",
+      "secret_key": "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",
+      "region":"us-east-1",
+      "imagename" : "nginx1",
+      "source_itypeimage" : "ami-07d0cf3af28718ef8",
+      "instance_type": "t2.micro"
+    },
+    "builders": [{
+      "type":"amazon-ebs",
+      "access_key":"{{user `access_key`}}",
+      "secret_key":"{{user `secret_key`}}",
+      "region":"{{user `region`}}",
+      "ami_name":"{{user `imagename`}}",
+      "source_ami":"{{user `source_itypeimage`}}",
+      "ssh_username":"ubuntu",
+      "instance_type":"{{user `instance_type` }}"
+      
+    }],
+    "provisioners": [{
+      "type": "shell",
+      "inline": [
+        "sudo apt get update",
+        "sudo apt get install nginx -y" 
+    ]
+      
+    }]
+}

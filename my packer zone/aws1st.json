@@ -1,0 +1,60 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "this is my first attempt",
+
+    "parameters" : {
+    
+    "vpcarg": {
+        "Description": "this is vpc argument",
+        "Type": "String",
+        "Default": "10.11.0.0/16"
+    },
+    
+    
+    "subnetarg": {
+        "Description": "this is subnet argument",
+        "Type": "String",
+        "Default": "10.11.0.0/24"
+    }
+    },
+    
+    
+
+    
+    "Resoureces": {
+        
+        "vpccf": {
+          "Type": "AWS::EC2::VPC",
+          "Properties": {
+            "CidrBlock": { "Ref": "vpcarg" } 
+          }
+        } ,  
+    
+            
+            "subnetName": {
+              "Type": "AWS::EC2::Subnet",
+              "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "VpcId": { "Ref": "vpcarg" },
+                "CidrBlock":  { "Ref": "subnetarg" }
+              }
+            },
+      
+      
+    
+    
+   "Outputs" : {
+
+        "VPCID" : {
+        "description": "my vpcid",
+         "Value" :  { "Ref": "vpcarg" }
+ 
+        }, 
+      "SUBNETID" :{
+          "description":"subnet id ",
+          "value" :  { "Ref": "subnetarg" }
+          }
+        }
+      
+    } 
+    

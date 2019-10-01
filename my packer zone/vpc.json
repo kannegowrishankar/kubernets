@@ -1,0 +1,53 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "this is my first vpc",
+    "Parameters": {
+        "mycidr": {
+            "Description": "this is my vpc cidr",
+            "Type": "String",
+            "Default": "192.168.0.0/16"
+        },
+        "mysubnet1": {
+            "Description": "this is my subnet cidr",
+            "Type": "String",
+            "Default": "192.168.1.0/24"
+        }
+    },
+    
+
+    
+        "Resources": {
+        "myvpc": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "mycidr"
+                },
+                "Tags": [
+                    {
+                        "key": "name",
+                        "value": "newvpc"
+                    }
+                ]
+            }
+        },
+        "subnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "VpcId": {
+                    "Ref": "myvpc"
+                },
+                "CidrBlock": {
+                    "Ref": "mysubnet1"
+                },
+                "Tags": [
+                    {
+                        "key": "name",
+                        "value": "mycidr"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+
+{
+    "variables":{
+        "access_key": "AKIAUVO3BLAEISWFWW5B",
+        "secret_key": "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",
+        "aws_region": "us-east-1",
+        "aws_ami_id" : "ami-db710fa3",
+        "aws_username": "ubuntu",
+        "ami_name": "pakcer-nginx",
+        "scriptpath" : "nginx.sh"
+        
+
+    },
+    "builders":[
+        {
+            "type": "amazon-ebs",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "region": "{{user `aws_region`}}",
+            "source_ami": "{{user `aws_ami_id`}}",
+            "instance_type": "t2.micro",
+            "ssh_username": "{{user `aws_username`}}",
+            "ami_name": "{{user `scriptpath`}}"
+          }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script":"{{user `ami_name`}}"
+            
+            
+          }
+    ]
+}

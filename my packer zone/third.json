@@ -1,0 +1,129 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "this is my first attempt",
+  "Parameters": {
+    "vpcarg": {
+      "Description": "this is vpc argument",
+      "Type": "String",
+      "Default": "10.11.0.0/16"
+    },
+    "subnet1": {
+      "Description": "this is subnet argument",
+      "Type": "String",
+      "Default": "10.11.3.0/24"
+    }
+  },
+  "subnet2": {
+    "Description": "this is my second subnet",
+    "Type": "String",
+    "Default": "10.11.1.0/24"
+  },
+  "subnet3": {
+    "Description": "this is my second subnet",
+    "Type": "String",
+    "Default": "10.11.2.0/24"
+  },
+  "Resources": {
+    "vpccf": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {
+          "Ref": "vpcarg"
+        }
+      }
+    },
+    "subnetName": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet1"
+        }
+      }
+    },
+    "subnet2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1b",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet2"
+        }
+      }
+    },
+    "subnet3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1c",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet3"
+        }
+      }
+    },
+    "igwName": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {},
+      "tags": [
+        {
+          "key": "name",
+          "value": "from begin"
+        }
+      ]
+    },
+    "AttachGateway": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": "vpcarg",
+        "InternetGatewayId": {
+          "Ref": "igwName"
+        },
+        "tags": [
+          {
+            "key": "name",
+            "value": "for netcontact"
+          }
+        ]
+      }
+    },
+    "myroutetable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": "vpcarg"
+      }
+    },
+    "routeName": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "ref": "myroutetable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "igwName"
+        }
+      }
+    },
+    "outputs": {
+      "vpcid": {
+        "description": "showing vpc id",
+        "values": {
+          "Ref": "vpcarg"
+        }
+      },
+      "subnetid": {
+        "description": "showing subnet id",
+        "values": {
+          "Ref": "subnet1"
+        }
+      }
+    }
+  }
+}

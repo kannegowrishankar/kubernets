@@ -1,0 +1,1 @@
+/*packer build -var "ami_name= packer-apache2" -var "scriptpath = "apache2.sh" validation.json/**/
