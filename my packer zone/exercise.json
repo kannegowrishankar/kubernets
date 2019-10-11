@@ -1,0 +1,92 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Applying RDS with CF",
+    "Parameters":{
+        
+        "InstanceType": {
+            "Description": "Instance Type of RDS",
+            "Type": "String",
+            "Default": "db.t2.micro"
+        },
+        
+        "StorageSize": {
+            "Description": "Storage Size in GB",
+            "Type": "String",
+            "Default":"10"
+        },
+    "Resources": {
+        
+        "myfirstfromcf": {
+          "Type": "AWS::RDS::DBInstance",
+          "Properties": {
+            "AllocatedStorage": 
+            { "Ref": "StorageSize" }
+            ,
+            "DBInstanceClass": 
+            { "Ref": "InstanceType" }
+            ,
+            "AllowMajorVersionUpgrade": "false",
+            "AutoMinorVersionUpgrade": "false",
+            "BackupRetentionPeriod": "0",
+            "DBInstanceIdentifier": "qt-rds-from-cf",
+            "DBName": "cfdb",
+            "Engine": "mysql",
+            "MasterUsername": "root",
+            "MasterUserPassword": "rootroot",
+            "MultiAZ": "false",
+            "PubliclyAccessible": "true",
+            "StorageEncrypted": "false"
+          }
+        },
+        
+        "vpccreate": {
+          "Type": "AWS::EC2::VPC",
+          "Properties": {
+            "CidrBlock": "10.0.0.0/16",
+        
+                
+                "Tags":[
+                { "Key": "name", "Value":  "myvpc1" }
+                ]
+        
+          }
+        },
+        
+        
+        "mysecgroup" : {
+          "Type" : "AWS::EC2::SecurityGroup",
+          "Properties" : {
+            "GroupDescription" : "Allow SSH",
+            "SecurityGroupIngress" : [{
+					"CidrIp": "0.0.0.0/0",
+					"FromPort": 22,
+					"IpProtocol": "tcp",
+					"ToPort": 22
+			}],
+            "VpcId" : 
+            { "Ref": "vpccreate" }
+            
+          }
+        },
+
+        
+        "myec2": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "KeyName": "",
+                "ImageId":  "ami-0cfee17793b08a293.00" ,
+                "InstanceType": "t2.micro",
+                "SecurityGroupIds" : [
+                { "Ref": "mysecgroup" }
+                ]
+            }   
+            
+        }
+        
+        
+        
+    },
+    "Outputs":{
+
+    }
+}

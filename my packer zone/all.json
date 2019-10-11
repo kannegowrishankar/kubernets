@@ -1,17 +1,19 @@
 
+{
 "auto" : {
     "Type" : "AWS::AutoScaling::AutoScalingGroup",
     "Properties" : {
         "AvailabilityZones" : ["--"],
         "LaunchConfigurationName" : "--",
-        "MaxSize" : "--",
-        "MinSize" : "--",
+        "MaxSize" : "3",
+        "MinSize" : "1",
         "Tags" : [ {"Key" : "Name",
-                    "Value" : ""--"",
+                    "Value" : "myautoscaling",
                     "PropagateAtLaunch" : "True"} 
                 ]
     }
-}
+},
+
 
 
 "launchConfigName": {
@@ -39,7 +41,7 @@
 }
 
 
-"-": {
+"": {
    "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
    "Properties": {
       "AvailabilityZones" : [ "-" ],

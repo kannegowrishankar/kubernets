@@ -19,40 +19,68 @@
             "myvpc": {
               "Type": "AWS::EC2::VPC",
               "Properties": {
-                "CidrBlock": "----/--",
-                "Tags": [-]
+                "CidrBlock": "10.11.0.0/16",
+                "Tags": [
+                  {
+        
+                    
+                  }
+                ]
               }
             }
             
-        }
+        },
+
+        
+        "secGroupName" : {
+          "Type" : "AWS::EC2::SecurityGroup",
+          "Properties" : {
+            "GroupDescription" : "-",
+            "SecurityGroupIngress" : [
+              
+              { "IpProtocol" : "tcp",
+                 "FromPort" : "22",
+                  "ToPort" : "22",
+                   "CidrIp" : "-" }
+               
+              
+            ],
+            "VpcId" : 
+            { "Ref": "myvpc" }
+            ,
+            "Tags" :  [ insert tag ]
+          }
+        },
+
+        
+
+
+        
         
         "rdsDBInstance": {
           "Type": "AWS::RDS::DBInstance",
           "Properties": {
-            "AllocatedStorage": "",
-            "DBInstanceClass": "",
-            "AllowMajorVersionUpgrade": "false",
+            "AllocatedStorage": "false",
+            "AllowMajorVersionUpgrade" : "false",
             "AutoMinorVersionUpgrade": "false",
             "AvailabilityZone": "us-west-1a",
-            "BackupRetentionPeriod": "1",
-            "CharacterSetName": "",
+            "BackupRetentionPeriod": "0",
             "DBInstanceIdentifier": "hello",
             "DBName": "myfirstdb",
             "DBParameterGroupName": "",
             "DBSecurityGroups": [ "" ],
             "DBSubnetGroupName": "",
             "Engine": "",
-            "EngineVersion": "",
+            "EngineVersion": "5.7",
             "LicenseModel": "",
             "MasterUsername": "shankar",
             "MasterUserPassword": "root1234",
             "MultiAZ": "false",
             "Port": "3306",
-            "PreferredBackupWindow": "",
-            "PreferredMaintenanceWindow": "",
+            
             "PubliclyAccessible": "false",
-            "SourceDBInstanceIdentifier": "",
-            "StorageEncrypted": "true | false",
+          
+            "StorageEncrypted": "false",
             "StorageType": "",
             "Tags": [  ],
             "VPCSecurityGroups": [ "" ]

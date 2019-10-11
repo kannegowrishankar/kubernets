@@ -1,0 +1,211 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "this is my first attempt",
+  "Parameters": {
+    "vpcarg": {
+      "Description": "this is vpc argument",
+      "Type": "String",
+      "Default": "10.11.0.0/16"
+    },
+    "subnet1": {
+      "Description": "this is subnet argument",
+      "Type": "String",
+      "Default": "10.11.3.0/24"
+    },
+    "subnet2": {
+      "Description": "this is my second subnet",
+      "Type": "String",
+      "Default": "10.11.1.0/24"
+    },
+    "subnet3": {
+      "Description": "this is my second subnet",
+      "Type": "String",
+      "Default": "10.11.2.0/24"
+    }
+  },
+  "Resources": {
+    "vpccf": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {
+          "Ref": "vpcarg"
+        }
+      }
+    },
+    "subnetName": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet1"
+        }
+      }
+    },
+    "subnet2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1b",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet2"
+        }
+      }
+    },
+    "subnet3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "us-east-1c",
+        "VpcId": {
+          "Ref": "vpcarg"
+        },
+        "CidrBlock": {
+          "Ref": "subnet3"
+        }
+      }
+    },
+    "igwName": {
+      "Type": "AWS::EC2::InternetGateway"
+    },
+    "AttachGateway": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": "vpcarg",
+        "InternetGatewayId": {
+          "Ref": "igwName"
+        }
+      }
+    },
+    "myroutetable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": "vpcarg"
+      }
+    },
+    "routeName": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "ref": "myroutetable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "igwName"
+        }
+      }
+    },
+    "myec2secGroupName": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "simple ec2 group",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "VpcId": {
+          "Ref": "myvpc"
+        }
+      }
+    },
+    "dbsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Allow http to client host",
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "myrdssecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Allow http to client host",
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "SecurityGroupEgress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "myrds": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "5",
+        "DBInstanceClass": "db.t2.micro",
+        "AllowMajorVersionUpgrade": " false",
+        "AutoMinorVersionUpgrade": " false",
+        "BackupRetentionPeriod": "0",
+        "DBInstanceIdentifier": "myfirstdb",
+        "DBName": "nodejsdb",
+        "VPCsecurityGroups": {
+          "Ref": "myrdssecuritygroup"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "forrdsDBSubnetGroup"
+        },
+        "Engine": "MYSQL",
+        "EngineVersion": "5.7.22",
+        "MasterUsername": "shankar",
+        "MasterUserPassword": "shankar1234",
+        "MultiAZ": "false",
+        "Port": "3306",
+        "PubliclyAccessible": " false",
+        "StorageType": "gp2"
+      },
+    
+      "myec21": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+          "KeyName": "vpc_pem",
+          "ImageId": "ami-0cfee17793b08a293",
+          "InstanceType": "t2.micro",
+          "Monitoring": "false",
+          "NetworkInterfaces": [ {
+            "AssociatePublicIpAddress": "true",
+            "DeviceIndex": "0",
+            "GroupSet": [{ "Ref" : "myVPCEC2SecurityGroup" }],
+            "SubnetId": { "Ref" : "" }
+          } ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+---
+-hosts:all
+  become:yes
+  tasks:
+  -name:Execute 
+   ping:
+  -name:update packages in ubuntu
+   apt:
+     name:git
+     update_cache : yes
+     state:present
+  -name:installing tree
+   apt:
+     name:tree
+     state:present   
